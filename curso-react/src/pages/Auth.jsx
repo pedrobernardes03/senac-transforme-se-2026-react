@@ -2,31 +2,32 @@ import { useState } from 'react';
 import { Link } from 'react-router'
 function Auth(){
     /* const[variavel, funcaoAlteraVariavel] = useState('valor inicial'); */
-    const[batatinha, setBatatinha]= useState(2);
-    function sub(){
-        setBatatinha(batatinha - 1)
-    }
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
     return(
-        <div className=''>
-    <Link to="/" className="py-2 px-3 bg-primary text-white rounded-md hover:shadow-inner ml-auto mr-4 shadow">Voltar</Link>
-    <div className="bg-red-100 rounded-full p-2" onClick={sub}>-</div>
-    {batatinha}
-    <div className="bg-green-100 rounded-full p-2" onClick={() => setBatatinha(batatinha + 1)}>+</div>
-    <div className="h-full flex flex-col">
-        <div className="mx-auto my-auto p-5 bg-blue1 rounded-lg shadow-md flex flex-col items-center">
-            <h2 className="text-primary">Login</h2>
-            
-            <form>
-                <article>
-                    Email: <input id="lEmail" type="email" placeholder="Digite o seu email" />
-                </article>
-                <article className="mt-2 mb-2">
-                    Senha: <input id="lPassword" type="password" placeholder="Digite sua senha" />
-                </article>
-                <Link to="/painel" id="btLogin" className="mt-5 bg-primary text-white text-center rounded-md p-1">Entrar</Link>
+        <div className='w-1/4 mx-auto my-auto p-4 bg-blue-100 rounded-lg shadow-md flex flex-col'>
+           
+            <form className='flex flex-col mt-3'>
+                <h2 className="text-primary top-0">Login</h2>
+                
+                
+                <span className='mt-3'>
+                    Email: <input type="email" placeholder="Digite o seu email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                    {email}
+                </span>
+                <span className="mt-3">
+                    Senha: <input type="password" placeholder="Digite sua senha" value={password} onChange={(e) => setPassword(e.target.value)} />
+                    {password}
+                </span>
+                 <div className='grid grid-cols-2 mt-3'>
+                 <Link to="/" className="mx-auto p-1 bg-primary text-white rounded-md hover:shadow-inner shadow items-center ">Voltar</Link>
+                 <Link to="/painel" id="btLogin" className=" bg-primary text-white text-center rounded-md p-1 mx-auto">Entrar</Link>
+
+            </div>
+               
             </form>
-        </div>
-    </div>
+        
+    
 </div>
     );
 }
