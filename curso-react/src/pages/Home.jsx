@@ -2,7 +2,7 @@ import { Link } from 'react-router'
 function Home() {
     return (
         <div className="bg-secondary">
-            <nav className="flex items-center py-2 px-3 shadow-md fixed w-full bg-secondary top-0">
+            <nav className="flex items-center py-2 px-3 shadow-md fixed w-full bg-blue-100 text-black top-0">
                 <a className="p-2 mr-2 hover:bg-primary hover:text-secondary" href="#about">Sobre</a>
                 <a className="p-2 mr-2 hover:bg-primary hover:text-secondary" href="#prices">Preços</a>
                 <a className="p-2 mr-2 hover:bg-primary hover:text-secondary" href="#features">Benefícios</a>
@@ -13,8 +13,8 @@ function Home() {
             <main>
 
                 <section >
-                    <div className="max-w-lg mx-auto py-5">
-                        <h1 className="text-center">Sobre a Safework</h1>
+                    <div className="max-w-lg mx-auto mt-8 py-5">
+                        <h1 className="text-center ">Sobre a Safework</h1>
                         <p>A <i>Safework</i> é uma ferramenta que busca facilitar o monitoramento da situação dos EPIs e
                             reforçaro o seu
                             uso, fornecer um dashboard com uma visão geral sobre a situação dos EPIs de cada funcionario, além
