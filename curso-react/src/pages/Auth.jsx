@@ -10,7 +10,7 @@ function Auth(){
 
 
     function handleLogin(){
-        const users = JSON.parse(localStorage.getItem('users'))
+        const users = JSON.parse(localStorage.getItem('users')) || []
         let user = users.find(u=>{
             return u.email == email
         })
