@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import {supabase} from '../../utils/supabase';
 
 function Painel() {
     const [modal, setModal] = useState(false) //bollean
@@ -7,6 +8,8 @@ function Painel() {
     const [l, setL] = useState({})
     const [isEdit, setIsEdit] = useState(false)
     const [index, setIndex] = useState(-1)
+    const [msg, setMsg] = useState('')
+    const [spiner, setSpiner] = useState(false)
 
     useEffect(() => {
         const logged = JSON.parse(localStorage.getItem('logado'))
@@ -31,23 +34,19 @@ function Painel() {
         setUser(users[indice])
         setIndex(indice)
     }
-
-    function handleRegister() {
-        let newUsers = []
-        if(index != -1){
-            newUsers = [...users]
-            newUsers[index] = user;
-        }else{
-            newUsers = [...users, user]
+    /* async aparece sempre que uma função tem um await, transforma a função em assincrona */
+    async function handleRegister() {
+        setSpiner(true)
+        const {data: authData, error: authError} = await supabase.auth.signUp({
+            email: user.email,
+            password: user.senha
+        });
+        if(authError){
+            setMsg(authError)
+            setSpiner(false)
+            return;
         }
-
-        ;
-        setUsers(newUsers);
-        localStorage.setItem('users', JSON.stringify(newUsers));
-        setUser({});
-        setModal(false);
-        setIndex(-1);
-        setIsEdit(false);
+        setSpiner(false)
 
     }
     return (
@@ -67,7 +66,8 @@ function Painel() {
                                 <b>Email:</b> <input value={user.email} onChange={(e) => setUser({ ...user, email: e.target.value })} className="bg-blue-100 placeholder-blue-900" type="email" placeholder="Digite o seu melhor email" />
                                 <b>Senha:</b> <input onChange={(e) => setUser({ ...user, senha: e.target.value })} className="bg-blue-100 placeholder-blue-900" type="password" placeholder="Letra maiuscula e números" />
                                 <b>Data de nascimento:</b> <input value={user.nascimento} onChange={(e) => setUser({ ...user, nascimento: e.target.value })} className="bg-blue-100 text-blue-900" type="date" />
-                                <a onClick={handleRegister} className="mt-5 bg-primary text-white text-center rounded-md py-2 cursor-pointer">Salvar</a>
+                                <a onClick={handleRegister} className="mt-5 bg-primary text-white text-center rounded-md py-2 cursor-pointer"> {spiner? '...':'Salvar'}</a>
+                                {msg}
                                 {index != -1 &&
                                     <a onClick={() => setIsEdit(false)} className="mt-5 bg-red-300 text-white text-center rounded-md py-2 cursor-pointer">Cancelar</a>
                                 }
