@@ -42,12 +42,34 @@ function Painel() {
             password: user.senha
         });
         if(authError){
-            setMsg(authError)
+            //console.log()
+            setMsg(authError.message)
             setSpiner(false)
             return;
         }
-        setSpiner(false)
+        if(!authData){
+            setMsg("Não foi possível cadastrar, verifique a internet")
+            setSpiner(false)
+            return;
+        }
+        const {data: loginData, error: loginError} = await supabase.auth.signInWithPassword({
+            email: user.email,
+            password: user.senha
+        });
 
+        const { error: profileError} = await supabase.from('colaborators').insert({
+            user_id: loginData.user.id,
+            name: user.nome,
+            cpf: user.cpf,
+            registration: user.registration
+        });
+        if(profileError){
+            setMsg(profileError.message)
+            setSpiner(false)
+            return;
+        }
+        
+        setSpiner(false)
     }
     return (
         <div className="max-w-lg flex flex-col mx-auto">
@@ -55,7 +77,7 @@ function Painel() {
             {modal &&
                 (<div
                     className="fixed top-0 right-0 bottom-0 left-0 items-center justify-center flex z-50 bg-blue-100 bg-opacity-75">
-                    <div className="relative max-w-sm w-full p-5 bg-about rounded-lg shadow-md flex flex-col bg-secondary">
+                    <div className="relative max-w-sm w-full p-5 rounded-lg shadow-md flex flex-col bg-secondary">
                         <a onClick={() => { setModal(false); setIsEdit(false); setUser({}); setIndex(-1) }} className="bg-red-500 text-white absolute top-0 right-0 px-2 rounded-full cursor-pointer">X</a>
                         <h2 className="text-blue-900">Cadastro de Usuário</h2>
                         <p className="text-blue-900 text-opacity-75">Preencha as informações abaixo</p>
@@ -63,9 +85,12 @@ function Painel() {
                         {isEdit ? (
                             <form className="flex flex-col text-blue-900">
                                 <b>Nome:</b> <input value={user.nome} onChange={(e) => setUser({ ...user, nome: e.target.value })} className="bg-blue-100 placeholder-blue-900" type="text" placeholder="Digite seu nome completo" />
+                                <b>CPF:</b> <input value={user.cpf} onChange={(e) => setUser({ ...user, cpf: e.target.value })} className="bg-blue-100 text-blue-900 placeholder-blue-900" type="text"placeholder="Digite seu CPF" />
+                                <b>Matricula:</b> <input value={user.registration} onChange={(e) => setUser({ ...user, registration: e.target.value })} className="bg-blue-100 text-blue-900 placeholder-blue-900" type="text"placeholder="Digite sua matrícula" />
+                                <b>Data de nascimento:</b> <input value={user.nascimento} onChange={(e) => setUser({ ...user, nascimento: e.target.value })} className="bg-blue-100 text-blue-900" type="date" />
                                 <b>Email:</b> <input value={user.email} onChange={(e) => setUser({ ...user, email: e.target.value })} className="bg-blue-100 placeholder-blue-900" type="email" placeholder="Digite o seu melhor email" />
                                 <b>Senha:</b> <input onChange={(e) => setUser({ ...user, senha: e.target.value })} className="bg-blue-100 placeholder-blue-900" type="password" placeholder="Letra maiuscula e números" />
-                                <b>Data de nascimento:</b> <input value={user.nascimento} onChange={(e) => setUser({ ...user, nascimento: e.target.value })} className="bg-blue-100 text-blue-900" type="date" />
+                                
                                 <a onClick={handleRegister} className="mt-5 bg-primary text-white text-center rounded-md py-2 cursor-pointer"> {spiner? '...':'Salvar'}</a>
                                 {msg}
                                 {index != -1 &&
