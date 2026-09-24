@@ -17,9 +17,18 @@ function Painel() {
     }, []);
 
     useEffect(() => {
-        const usersTemp = JSON.parse(localStorage.getItem('users'))
-        if (usersTemp) setUsers(usersTemp)
+        loadUsers()
     }, [])
+
+    async function loadUsers(){
+        const{data, error} = await supabase.from('colaborators').select('*')
+        if(error){
+            setMsg(error.message)
+            return;
+        }
+        setUsers(data)
+        
+    }
 
     function deleteUser(index){
         const newUsers = users.filter((u,i)=>{
@@ -114,17 +123,19 @@ function Painel() {
                 <thead className="bg-primary text-white">
                     <tr>
                         <th>Nome</th>
-                        <th>Email</th>
-                        <th> Ações</th>
+                        <th>Matrícula</th>
+                        <th>CPF</th>
+                        <th>Ações</th>
                     </tr>
 
                 </thead>
-                <tbody className="">
+                <tbody className="bg-blue-50">
                     {
                         users.map((u, i) => (
                             <tr>
-                                <td>{u.nome}</td>
-                                <td>{u.email}</td>
+                                <td>{u.name}</td>
+                                <td>{u.registration}</td>
+                                <td>{u.cpf}</td>
                                 <td>
                                     <a className="cursor-pointer px-3 text-white hover:shadow shadow-md m-3 rounded-full bg-green-500" onClick={() => updateUser(i)}>V</a>
                                     <a className="cursor-pointer px-3 text-white hover:shadow shadow-md m-3 rounded-full bg-red-500" onClick={() => deleteUser(i)}>X</a>
