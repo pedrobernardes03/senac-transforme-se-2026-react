@@ -46,7 +46,7 @@ function Painel() {
         loadUsers()
     }
 
-    async function deleteUser() {
+    async function deleteUser(index) {
         const { error } = await supabase
             .from('colaborators')
             .delete()
@@ -86,8 +86,10 @@ function Painel() {
             password: user.password
         });
 
+        const {email, password, ...colaboratorData} = user;
+
         const { error: profileError } = await supabase.from('colaborators').insert({
-            ...user,
+            ...colaboratorData,
             user_id: loginData.user.id
         });
         if (profileError) {
@@ -123,7 +125,7 @@ function Painel() {
                                 <a onClick={
                                     () => {
                                         if (index == -1)
-                                            handleRegister
+                                            handleRegister()
                                         else
                                             editUser()
                                     }
@@ -167,7 +169,7 @@ function Painel() {
                                 <td>{u.cpf}</td>
                                 <td>
                                     <a className="cursor-pointer px-3 text-white hover:shadow shadow-md m-3 rounded-full bg-green-500" onClick={() => updateUser(u)}>V</a>
-                                    <a className="cursor-pointer px-3 text-white hover:shadow shadow-md m-3 rounded-full bg-red-500" onClick={() => deleteUser(u)}>X</a>
+                                    <a className="cursor-pointer px-3 text-white hover:shadow shadow-md m-3 rounded-full bg-red-500" onClick={() => deleteUser(u.id)}>X</a>
                                 </td>
                             </tr>
                         ))}
