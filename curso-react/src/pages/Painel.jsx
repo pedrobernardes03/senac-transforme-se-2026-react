@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase } from '../../utils/supabase';
+import { ToastSucess, useToast } from "../components/Toast";
 
 function Painel() {
     const [modal, setModal] = useState(false) //bollean
@@ -8,7 +9,7 @@ function Painel() {
     const [l, setL] = useState({})
     const [isEdit, setIsEdit] = useState(false)
     const [index, setIndex] = useState(-1)
-    const [msg, setMsg] = useState('')
+    const {msg, setMsg} = useToast()
     const [spiner, setSpiner] = useState(false)
 
     useEffect(() => {
@@ -97,7 +98,7 @@ function Painel() {
             setSpiner(false)
             return;
         }
-
+        setMsg('Usuario cadastrado')
         setSpiner(false)
     }
     return (
@@ -131,7 +132,6 @@ function Painel() {
                                     }
                                 }
                                     className="mt-5 bg-primary text-white text-center rounded-md py-2 cursor-pointer"> {spiner ? '...' : 'Salvar'}</a>
-                                {msg}
                                 {index != -1 &&
                                     <a onClick={() => setIsEdit(false)} className="mt-5 bg-red-300 text-white text-center rounded-md py-2 cursor-pointer">Cancelar</a>
                                 }
@@ -178,6 +178,7 @@ function Painel() {
             </table>
             <a onClick={() => { setModal(true); setIsEdit(true) }} className="rounded-full bg-primary text-white px-4 py-2 fixed bottom-0 right-0 cursor-pointer"> + </a>
 
+             <ToastSucess msg={msg} setMsg={setMsg} />           
         </div>
     )
 }
