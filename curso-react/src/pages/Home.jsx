@@ -1,15 +1,10 @@
 import { Link } from 'react-router'
+import { Template } from '../components/Template';
 function Home() {
     return (
         <div className="bg-secondary">
-            <nav className="flex items-center py-2 px-3 shadow-md fixed w-full bg-blue-100 text-black top-0">
-                <a className="p-2 mr-2 hover:bg-primary hover:text-secondary" href="#about">Sobre</a>
-                <a className="p-2 mr-2 hover:bg-primary hover:text-secondary" href="#prices">Preços</a>
-                <a className="p-2 mr-2 hover:bg-primary hover:text-secondary" href="#features">Benefícios</a>
-                <Link className="py-2 px-3 bg-primary text-white rounded-md hover:shadow-inner ml-auto mr-4 shadow" to="/login">Acessar</Link>
-                {/* em Link se usa to */}
-            </nav>
-
+           
+        <Template>
             <main>
 
                 <section >
@@ -70,10 +65,8 @@ function Home() {
                     </div>
                 </section>
             </main>
-
-            <footer>
-
-            </footer>
+        </Template>
+           
         </div>
     );
 }

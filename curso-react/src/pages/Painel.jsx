@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from '../../utils/supabase';
 import { ToastSucess, useToast } from "../components/Toast";
+import { TemplatePainel } from "../components/Template";
 
 function Painel() {
     const [modal, setModal] = useState(false) //bollean
@@ -102,7 +103,8 @@ function Painel() {
         setSpiner(false)
     }
     return (
-        <div className="max-w-lg flex flex-col mx-auto">
+    <TemplatePainel>
+        <div className="max-w-lg flex flex-col mx-auto mt-14">
             <h3 className="absolute left-0 ml-1 text-black"><b>Bem vindo, {l?.nome}</b></h3>
             {modal &&
                 (<div
@@ -176,10 +178,11 @@ function Painel() {
 
                 </tbody>
             </table>
-            <a onClick={() => { setModal(true); setIsEdit(true) }} className="rounded-full bg-primary text-white px-4 py-2 fixed bottom-0 right-0 cursor-pointer"> + </a>
+            <a onClick={() => { setModal(true); setIsEdit(true) }} className="rounded-full bg-primary text-white px-4 py-2  cursor-pointer"> + </a>
 
              <ToastSucess msg={msg} setMsg={setMsg} />           
         </div>
+    </TemplatePainel>
     )
 }
 
